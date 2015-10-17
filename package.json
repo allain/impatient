@@ -1,0 +1,33 @@
+{
+  "name": "impatient",
+  "version": "1.0.0",
+  "description": "A tool for turning asynchronous things into impatient versions of themselves",
+  "main": "index.js",
+  "scripts": {
+    "test": "blue-tape test/*.js | tspec",
+    "postpublish": "git push origin master --follow-tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com//impatient.git"
+  },
+  "keywords": [
+    "promise",
+    "callback",
+    "timeout"
+  ],
+  "author": "Allain Lalonde <allain.lalonde@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com//impatient/issues"
+  },
+  "homepage": "https://github.com//impatient#readme",
+  "devDependencies": {
+    "blue-tape": "*",
+    "tap-spec": "*"
+  },
+  "dependencies": {
+    "is-promise": "^2.1.0",
+    "native-promise-only": "^0.8.1"
+  }
+}
