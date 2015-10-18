@@ -7,7 +7,7 @@
 
 ## Install
 
-```sh
+```bash
 npm installimpatient
 ```
 
