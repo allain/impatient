@@ -17,30 +17,37 @@ npm installimpatient
 var impatient = require('impatient');
 var sleep = require('sleep-promise');
 
+// impatient promise (wait for 1000ms but reject at 50ms)
 impatient(sleep(1000), 50 /* max patience */).catch(function(err) {
-  // cancels the wait with Error('timeout')
-  console.log(err);
+  console.error('promise rejection', err); // timeout error
+});
+
+// impatient callback (wait for 1000ms but give up at 50ms)
+var impatientCb = impatient(function(cb) { setTimeout(cb, 1000); }, 50 /*max patience*/);
+
+impatientCb(function(err) {
+  console.error('callback error', err); // timeout error
 });
 ```
 
-By default, it does not stop the promise's execution path, but when it gets to its resolution, the result will be dropped.
-
-If you want to cleanup, you may hook an abort method onto the promise and it'll get invoked.
+If you want to perform some cleanup on aborting, you may pass in a function as the 3rd param to impatient.
 
 ```js
-var impatient = require('impatient');
-var sleep = require('sleep-promise');
-
-var delayed = sleep(1000);
-delayed.abort = function() {
-  console.log('ABORTING DELAY');
-  
-  // Returning a promise will cause impatient to wait till it resolves before officially rejecting the promise.
-};
-
-impatient(sleep(1000), 50 /* max patience */).catch(function(err) {
+impatient(sleep(1000), 50, function() {
+  console.log('cleanup');
+  // return optional promise, which will delay the resolution till cleanup is done
+}).catch(function(err) {
   // cancels the wait with Error('timeout')
-  console.log(err);
+  console.error(err);
+});
+
+var impatientCb = impatient(function(cb) { setTimeout(cb, 1000); }, 50, function(cb) {
+  console.log('cleaning up cb');
+  cb();
+});
+
+impatientCb(function(err) {
+  console.error('callback error', err);
 });
 ```
 
@@ -51,5 +58,5 @@ MIT © [Allain Lalonde](http://github.com/allain)
 [npm-url]: https://npmjs.org/package/impatient
 [npm-image]: https://img.shields.io/npm/v/impatient.svg?style=flat-square
 
-[travis-url]: https://travis-ci.org//impatient
-[travis-image]: https://img.shields.io/travis//impatient.svg?style=flat-square
+[travis-url]: https://travis-ci.org/allain/impatient
+[travis-image]: https://img.shields.io/travis/allain/impatient.svg?style=flat-square
