@@ -1,6 +1,6 @@
 {
   "name": "impatient",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A tool for turning asynchronous things into impatient versions of themselves",
   "main": "index.js",
   "scripts": {
